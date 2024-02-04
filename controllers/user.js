@@ -44,12 +44,9 @@ export const login = async (req, res) => {
 }
 
 export const getAllUsers = async (req, res) => {
-
     try {
-
         let allUsers = await userModel.find({}, "-password");
         res.json(allUsers);
-
     } catch (err) {
         res.status(400).json({ type: "invalid operation", message: "cannot sign in user" })
     }

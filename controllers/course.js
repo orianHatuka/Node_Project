@@ -4,18 +4,12 @@ import { CourseModel, courseValidator } from "../models/course.js"
 //params חובה /api/course/1
 //queryparams אופציונלים /api/course?txt=a
 
-
-
-
 export const getAllCourses = async (req, res, next) => {
-
     let txt = req.query.txt || undefined;
     let page = req.query.page || 1;
     let perPage = req.query.perPage || 30;
-
     // if(req.xxx)
     try {
-
         let allCourses = await CourseModel.find({
             $or:
                 [{ name: txt }, { "speaker.firstName": txt }]
@@ -28,8 +22,6 @@ export const getAllCourses = async (req, res, next) => {
         res.status(400).json({ type: "invalid operation", message: "sorry cannot get courses" })
     }
 }
-
-
 
 export const getCourseById = async (req, res) => {
     let { id } = req.params;
@@ -52,7 +44,6 @@ export const getCourseById = async (req, res) => {
 
 }
 
-
 export const deleteCourse = async (req, res) => {
     //req.user
     let { id } = req.params;
@@ -60,13 +51,11 @@ export const deleteCourse = async (req, res) => {
         if (!mongoose.isValidObjectId(id))
             return res.status(400).json({ type: "not valid id", message: "id not in right format" })
         let course = await CourseModel.findById(id);
-
-
         if (!course)
             return res.status(404).json({ type: "no course to delete", message: "no course with such id to delete" })
         if (req.user.role != "ADMIN" && course.userId != req.user._id)
             res.status(403).json({ type: "not allowed", message: "you are not allowed to delete course only manager or if you added this course" })
-        course =await CourseModel.findByIdAndDelete(id)
+        course = await CourseModel.findByIdAndDelete(id)
         return res.json(course)
     }
     catch (err) {
@@ -100,7 +89,6 @@ export const addCourse = async (req, res) => {
 
 }
 
-
 export const updateCourse = async (req, res) => {
 
     let { id } = req.params;
@@ -122,13 +110,10 @@ export const updateCourse = async (req, res) => {
         // await course.save();
 
         let updated = await CourseModel.findByIdAndUpdate(id, req.body, { new: true })
-
         return res.json(updated);
-
     }
     catch (err) {
         console.log(err)
         res.status(400).json({ type: "invalid operation", message: "sorry cannot get course" })
     }
-
 }

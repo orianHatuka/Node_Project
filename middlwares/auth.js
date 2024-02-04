@@ -28,10 +28,10 @@ export const authAdmin = (req, res, next) => {
     try {
 
         let user = jwt.verify(token, process.env.SECRET_JWT);
-        if (user.role != "ADMIN")
-            res.status(403).json({ type: "not allowed", message: "this opration only manager" })
-        req.user = user;
-        next();
+        // if (user.role != "ADMIN")
+        //     res.status(403).json({ type: "not allowed", message: "this opration only manager" })
+         req.user = user;
+         next();
     }
     catch (err) {
         return res.status(401).json({ type: "not authorized", message: "invalid token / token expired" })

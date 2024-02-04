@@ -2,20 +2,19 @@ import mongoose from "mongoose";
 import { speakerSchema } from "./course.js";
 import jwt from "jsonwebtoken";
 
-const minimalCourseSchema = mongoose.Schema({
+export const minimalCourseSchema = mongoose.Schema({
     name: String,
     price: Number,
     speaker: speakerSchema
 })
 
-const userSchema = mongoose.Schema({
-
+export const userSchema = mongoose.Schema({
     userName: String,
     password: String,
     email: { type: String, unique: true },
-    courses: [minimalCourseSchema],
-    role: { type: String, default: "USER" }
-})
+    role: { type: String, default: "USER" },
+    signingDate:{type: Date, default: Date.now}
+});
 
 export const userModel = mongoose.model("users", userSchema)
 
